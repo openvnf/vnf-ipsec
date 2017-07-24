@@ -1,0 +1,17 @@
+image: docker:latest
+services:
+  - docker:dind
+stages:
+  - build
+build:
+  stage: build
+  tags:
+    - runner
+  script:
+    - set -euo pipefail
+    - NAME="$CI_REGISTRY_IMAGE:$(echo $CI_BUILD_REF|cut -c1-8)"
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $NAME .
+    - docker tag $NAME $CI_REGISTRY_IMAGE:latest
+    - docker push $NAME
+    - docker push $CI_REGISTRY_IMAGE:latest
