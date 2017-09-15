@@ -29,7 +29,7 @@ and afterwards execute it as followed:
 # docker run -it --rm --privileged --cap-add=NET_ADMIN --net=host \
     -v /lib/modules:/lib/modules \
     -v `pwd`/my_configs:/etc/ipsec.config.d \
-    -v `pwd`/my_secrets:/etc/ipsec.secrets.d werft.tpip.net/cennso/image-vpn-s2s
+    -v `pwd`/my_secrets:/etc/ipsec.secrets.d image-vpn-s2s
 ```
 
 ## Configuration
