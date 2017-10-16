@@ -1,0 +1,11 @@
+[template]
+src = "ipsec.aws.conf.tmpl"
+prefix = "/ipsec/aws"
+dest = "/etc/ipsec.config.d/ipsec.aws.conf"
+keys = [
+    "/localprivip",
+    "/localpubip",
+    "/remoteip",
+    "/localnet",
+    "/remotenet"
+]
