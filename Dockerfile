@@ -19,7 +19,9 @@ LABEL maintainer="tobias.famulla@travelping.com"
 RUN apk add --update --no-cache strongswan && \
         mkdir -p /etc/ipsec.secrets.d/ && \
         mkdir -p /etc/ipsec.config.d/ && \
-        mkdir -p /etc/confd/{conf.d,templates}
+        mkdir -p /etc/confd/conf.d && \
+        mkdir -p /etc/confd/templates
+
 COPY --from=confd /app/bin/confd /usr/local/bin/confd
 ADD files/ipsec.conf /etc/ipsec.conf
 ADD files/ipsec.secrets /etc/ipsec.secrets

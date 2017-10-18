@@ -1,5 +1,5 @@
 #!/bin/sh
-set -euo pipefail
+set -eo pipefail
 
 if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "AWS" ]
 then
