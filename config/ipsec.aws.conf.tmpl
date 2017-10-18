@@ -38,8 +38,7 @@ conn site-static-ip
 	also=sts-base
 	keyexchange=ikev2
 	leftsubnet={{getv "/localnet"}}
-	left={{getv "/localpubip"}}
-	leftsourceip={{getv "/localprivip"}}
+	left={{getv "/localprivip"}}
 	leftid={{getv "/localpubip"}}
 	rightsubnet={{getv "/remotenet"}}
 	right={{getv "/remoteip"}}
