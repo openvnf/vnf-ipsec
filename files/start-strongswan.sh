@@ -2,8 +2,8 @@
 set -euo pipefail
 
 _remove_route() {
-  echo "ip route del $IPSEC_AWS_LOCALNET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
-  ip route del $IPSEC_AWS_LOCALNET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
+  echo "ip route del $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
+  ip route del $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
   return 0
 }
 
@@ -36,8 +36,8 @@ cat /etc/ipsec.config.d/ipsec.aws.conf
 
 echo "======= setup route ======="
 DEFAULTROUTER=`ip route | head -1 | cut -d ' ' -f 3`
-echo "ip route add $IPSEC_AWS_LOCALNET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
-ip route add $IPSEC_AWS_LOCALNET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
+echo "ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
+ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
 
 echo "======= start Strongswan ======="
 ipsec start --nofork &
