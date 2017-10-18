@@ -29,5 +29,6 @@ ADD config/*.tmpl /etc/confd/templates/
 ADD files/strongswan-config.toml /etc/confd/conf.d/
 ADD files/strongswan-secret.toml /etc/confd/conf.d/
 ADD files/start-strongswan.sh /usr/local/bin
+ADD files/charon.conf /etc/strongswan.d/
 
 CMD start-strongswan.sh
