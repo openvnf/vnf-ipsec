@@ -27,7 +27,7 @@ then
       return 0
     }
 
-    trap _term SIGTERM
+    trap _term TERM INT
 
     _check_variables
 
@@ -43,7 +43,9 @@ then
 
     echo "======= start Strongswan ======="
     set +eo pipefail
-    ipsec start --nofork
+    ipsec start --nofork &
+    child=$!
+    wait "$child"
 
     _term
 
@@ -54,9 +56,11 @@ else
         exit 0
     }
 
-    trap _term SIGTERM
-
+    trap _term TERM INT
+    echo "======= start Strongswan ======="
     set +eo pipefail
-    ipsec start --nofork
+    ipsec start --nofork &
+    child=$!
+    wait "$child"
     _term
 fi
