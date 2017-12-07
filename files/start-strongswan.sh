@@ -12,8 +12,7 @@ then
 
     _term() {
       echo "======= caught SIGTERM signal ======="
-      kill -TERM "$child" 2>/dev/null
-      wait "$child"
+      ipsec stop
       _remove_route
       exit 0
     }
@@ -43,12 +42,21 @@ then
     ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
 
     echo "======= start Strongswan ======="
-    ipsec start --nofork &
+    unset -eo pipefail
+    ipsec start --nofork
 
-    child=$!
-    wait "$child"
-    _remove_route
+    _term
 
 else
-    exec ipsec start --nofork
+    _term() {
+        echo "======= caught SIGTERM signal ======="
+        ipsec stop
+        exit 0
+    }
+
+    trap _term SIGTERM
+
+    unset -eo pipefail
+    ipsec start --nofork
+    _term
 fi
