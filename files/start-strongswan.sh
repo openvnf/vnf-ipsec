@@ -42,7 +42,7 @@ then
     ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
 
     echo "======= start Strongswan ======="
-    unset -eo pipefail
+    set +eo pipefail
     ipsec start --nofork
 
     _term
@@ -56,7 +56,7 @@ else
 
     trap _term SIGTERM
 
-    unset -eo pipefail
+    set +eo pipefail
     ipsec start --nofork
     _term
 fi
