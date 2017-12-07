@@ -31,4 +31,4 @@ ADD files/strongswan-secret.toml /etc/confd/conf.d/
 ADD files/start-strongswan.sh /usr/local/bin
 ADD files/charon.conf /etc/strongswan.d/
 
-CMD start-strongswan.sh
+ENTRYPOINT ["/usr/local/bin/start-strongswan.sh"]
