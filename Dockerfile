@@ -17,17 +17,18 @@ FROM alpine:latest
 LABEL maintainer="tobias.famulla@travelping.com"
 
 RUN apk add --update --no-cache strongswan && \
-        mkdir -p /etc/ipsec.secrets.d/ && \
-        mkdir -p /etc/ipsec.config.d/ && \
+        mkdir -p /etc/ipsec.secrets.d && \
+        mkdir -p /etc/ipsec.config.d && \
         mkdir -p /etc/confd/conf.d && \
-        mkdir -p /etc/confd/templates
+        mkdir -p /etc/confd/templates && \
+        mkdir -p /etc/confd/conf.d.disabled
 
 COPY --from=confd /app/bin/confd /usr/local/bin/confd
 ADD files/ipsec.conf /etc/ipsec.conf
 ADD files/ipsec.secrets /etc/ipsec.secrets
 ADD config/*.tmpl /etc/confd/templates/
-ADD files/strongswan-config.toml /etc/confd/conf.d/
-ADD files/strongswan-secret.toml /etc/confd/conf.d/
+ADD files/strongswan-config.toml /etc/confd/conf.d.disabled/
+ADD files/strongswan-secret.toml /etc/confd/conf.d.disabled/
 ADD files/start-strongswan.sh /usr/local/bin
 ADD files/charon.conf /etc/strongswan.d/
 

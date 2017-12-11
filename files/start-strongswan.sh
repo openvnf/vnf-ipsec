@@ -1,12 +1,33 @@
 #!/bin/sh
 set -eo pipefail
 
-if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "AWS" ]
+_config() {
+    echo "======= Create config ======="
+
+    if [ "$USE_ENV_CONFIG" = "HIDDEN_PUPIP_HOST" ]
+    then
+        cp /etc/confd/conf.d.disabled/*.hidden_pubip_host.* /etc/confd/conf.d
+    fi
+
+    confd -onetime -backend env
+    echo "======= Config ======="
+    cat /etc/ipsec.config.d/*.conf
+}
+
+_start_strongswan() {
+    echo "======= start Strongswan ======="
+    set +eo pipefail
+    ipsec start --nofork &
+    child=$!
+    wait "$child"
+}
+
+if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "HIDDEN_PUPIP_HOST" ]
 then
     # Use AWS config template
     _remove_route() {
-      echo "ip route del $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
-      ip route del $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
+      echo "ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
+      ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
       return 0
     }
 
@@ -18,12 +39,12 @@ then
     }
 
     _check_variables() {
-      [ -z "$IPSEC_AWS_LOCALNET" ] && { echo "Need to set IPSEC_AWS_LOCALNET"; exit 1; }
-      [ -z "$IPSEC_AWS_PSK" ] && { echo "Need to set IPSEC_AWS_PSK"; exit 1; }
-      [ -z "$IPSEC_AWS_REMOTEIP" ] && { echo "Need to set IPSEC_AWS_REMOTEIP"; exit 1; }
-      [ -z "$IPSEC_AWS_LOCALPRIVIP" ] && { echo "Need to set IPSEC_AWS_LOCALPRIVIP"; exit 1; }
-      [ -z "$IPSEC_AWS_LOCALPUBIP" ] && { echo "Need to set IPSEC_AWS_LOCALPUBIP"; exit 1; }
-      [ -z "$IPSEC_AWS_REMOTENET" ] && { echo "Need to set IPSEC_AWS_REMOTENET"; exit 1; }
+      [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
+      [ -z "$IPSEC_PSK" ] && { echo "Need to set IPSEC_PSK"; exit 1; }
+      [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
+      [ -z "$IPSEC_LOCALPRIVIP" ] && { echo "Need to set IPSEC_LOCALPRIVIP"; exit 1; }
+      [ -z "$IPSEC_LOCALPUBIP" ] && { echo "Need to set IPSEC_LOCALPUBIP"; exit 1; }
+      [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
       return 0
     }
 
@@ -31,21 +52,14 @@ then
 
     _check_variables
 
-    echo "======= Create config ======="
-    confd -onetime -backend env
-    echo "======= Config ======="
-    cat /etc/ipsec.config.d/ipsec.aws.conf
+    _config
 
     echo "======= setup route ======="
     DEFAULTROUTER=`ip route | head -1 | cut -d ' ' -f 3`
-    echo "ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP"
-    ip route add $IPSEC_AWS_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_AWS_LOCALPRIVIP
+    echo "ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
+    ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
 
-    echo "======= start Strongswan ======="
-    set +eo pipefail
-    ipsec start --nofork &
-    child=$!
-    wait "$child"
+    _start_strongswan
 
     _term
 
