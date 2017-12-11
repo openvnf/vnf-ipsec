@@ -27,8 +27,8 @@ COPY --from=confd /app/bin/confd /usr/local/bin/confd
 ADD files/ipsec.conf /etc/ipsec.conf
 ADD files/ipsec.secrets /etc/ipsec.secrets
 ADD config/*.tmpl /etc/confd/templates/
-ADD files/strongswan-config.toml /etc/confd/conf.d.disabled/
-ADD files/strongswan-secret.toml /etc/confd/conf.d.disabled/
+ADD files/strongswan.hidden_pubip_host.config.toml /etc/confd/conf.d.disabled/
+ADD files/strongswan.hidden_pubip_host.secret.toml /etc/confd/conf.d.disabled/
 ADD files/start-strongswan.sh /usr/local/bin
 ADD files/charon.conf /etc/strongswan.d/
 

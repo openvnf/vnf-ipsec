@@ -4,7 +4,7 @@ set -eo pipefail
 _config() {
     echo "======= Create config ======="
 
-    if [ "$USE_ENV_CONFIG" = "HIDDEN_PUPIP_HOST" ]
+    if [ "$USE_ENV_CONFIG" = "HIDDEN_PUBIP_HOST" ]
     then
         cp /etc/confd/conf.d.disabled/*.hidden_pubip_host.* /etc/confd/conf.d
     fi
@@ -22,7 +22,7 @@ _start_strongswan() {
     wait "$child"
 }
 
-if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "HIDDEN_PUPIP_HOST" ]
+if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "HIDDEN_PUBIP_HOST" ]
 then
     # Use AWS config template
     _remove_route() {
