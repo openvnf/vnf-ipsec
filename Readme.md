@@ -1,18 +1,30 @@
 # Site-to-site VPN Gateway using StrongSwan
 
-This container image provides a privileged container to connect two sites
-to each other running in a vm on Azure or any other node if configuration is
-manually provided.
+This container image provides a container to connect two sites
+to each other.
 
 There are two different ways of running the container in current version, where the default
 is the *manual way* for compatibility reasons.
+In general this way can be used with every configuration accepted by the *strongswan* software
+and is therefor quite useful for testing and development on new architectures.
 
 If running on AWS using the *env-var* way is the recommended one.
+This configuration should also be sufficient for every scenario where the public-ip is hidden on the virtual machine, so not visible by the `ip` command.
+
+Testing though was just fulfiled on AWS.
 
 ## The *ENV-VAR* way of running Strongswan
 
 This way there is template being used to configure the container.
-Further there will be a route set by a script which is just tested on AWS yet.
+
+An option to create routes in the default routing table is also provided.
+It has to be used, if routing of the tunneled networks should happen automatically when using *calico*.
+For this to be working, the network has though to be accepted by calico and the container has to
+run using host networking. 
+
+If running as a container without host networking, just adding CAP_NET_ADMIN is sufficient but
+useful termination of the traffic inside the container has to be taken care of by the user.
+
 For other architectures, the code might have to be changed.
 
 ### Run this container
@@ -29,6 +41,8 @@ To run the container execute the following section:
     --env-file environment.sh \
     werft.tpip.net/cennso/image-vpn-s2s
 ```
+
+If using the host networking is not necessary, just ommit the parameters `--privileged` and `--net=host`.
 
 If you do not have access to the Werft, clone this repository and build the container first:
 
@@ -53,19 +67,22 @@ You have to create a file containing the environmental variables you want to con
 # configuration variables for Strongswan VPN image
 # set this variable to switch to env-var mode for AWS
 USE_ENV_CONFIG=AWS
+# set route for tunnel into the default routing table outside of the scope of strongswan
+# use this just in conjunction with calico and host networking
+SET_ROUTE_DEFAULT_TABLE=FALSE
 # local private IP of the AWS node the container is supposed to be running on
-IPSEC_AWS_LOCALPRIVIP
+IPSEC_AWS_LOCALPRIVIP=
 # corresponding local public IP of the AWS node
-IPSEC_AWS_LOCALPUBIP
+IPSEC_AWS_LOCALPUBIP=
 # local network to be shared over the VPN tunnel
-IPSEC_AWS_LOCALNET
+IPSEC_AWS_LOCALNET=
 # public IP address of the remote node of the tunnel
-IPSEC_AWS_REMOTEIP
+IPSEC_AWS_REMOTEIP=
 # remote network to be shared
-IPSEC_AWS_REMOTENET
+IPSEC_AWS_REMOTENET=
 # pre shared key to be used for the tunnel
 # this should be a long random string
-IPSEC_AWS_PSK
+IPSEC_AWS_PSK=
 ```
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.

@@ -26,16 +26,26 @@ if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "HIDDEN_PUBIP_HOST" ]
 then
     # Use AWS config template
     _remove_route() {
-      echo "ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
-      ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
-      return 0
+        echo "ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
+        ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
+        return 0
+    }
+
+    _add_route() {
+        echo "======= setup route ======="
+        DEFAULTROUTER=`ip route | head -1 | cut -d ' ' -f 3`
+        echo "ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
+        ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
     }
 
     _term() {
-      echo "======= caught SIGTERM signal ======="
-      ipsec stop
-      _remove_route
-      exit 0
+        echo "======= caught SIGTERM signal ======="
+        ipsec stop
+        if [ -n "$SET_ROUTE_DEFAULT_TABLE" ] && [ "$SET_ROUTE_DEFAULT_TABLE" = "TRUE" ]
+        then
+            _remove_route
+        fi
+        exit 0
     }
 
     _check_variables() {
@@ -54,10 +64,10 @@ then
 
     _config
 
-    echo "======= setup route ======="
-    DEFAULTROUTER=`ip route | head -1 | cut -d ' ' -f 3`
-    echo "ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
-    ip route add $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
+    if [ -n "$SET_ROUTE_DEFAULT_TABLE" ] && [ "$SET_ROUTE_DEFAULT_TABLE" = "TRUE" ]
+    then
+        _add_route
+    fi
 
     _start_strongswan
 
