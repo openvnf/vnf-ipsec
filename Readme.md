@@ -71,18 +71,18 @@ USE_ENV_CONFIG=AWS
 # use this just in conjunction with calico and host networking
 SET_ROUTE_DEFAULT_TABLE=FALSE
 # local private IP of the AWS node the container is supposed to be running on
-IPSEC_AWS_LOCALPRIVIP=
+IPSEC_LOCALPRIVIP=
 # corresponding local public IP of the AWS node
-IPSEC_AWS_LOCALPUBIP=
+IPSEC_LOCALPUBIP=
 # local network to be shared over the VPN tunnel
-IPSEC_AWS_LOCALNET=
+IPSEC_LOCALNET=
 # public IP address of the remote node of the tunnel
-IPSEC_AWS_REMOTEIP=
+IPSEC_REMOTEIP=
 # remote network to be shared
-IPSEC_AWS_REMOTENET=
+IPSEC_REMOTENET=
 # pre shared key to be used for the tunnel
 # this should be a long random string
-IPSEC_AWS_PSK=
+IPSEC_PSK=
 ```
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
