@@ -10,5 +10,6 @@ keys = [
     "/remotenet",
     "/keyexchange",
     "/espcipher",
-    "/ikecipher"
+    "/ikecipher",
+    "/forceudp"
 ]

@@ -109,6 +109,10 @@ IPSEC_ESPCIPHER=
 # depending on your value for IPSEC_KEYEXCHANGE.
 # example: aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072
 IPSEC_IKECIPHER=
+
+# Force UDP encapsulation for ESP packets even if no NAT situation is detected.
+# *yes* | no
+IPSEC_FORCEUDP=
 ```
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
