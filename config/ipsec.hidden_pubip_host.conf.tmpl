@@ -30,13 +30,13 @@ config setup
 conn sts-base
 	fragmentation=yes
 	dpdaction=restart
-	ike=aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072
-	esp=aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072#
+	ike={{getv "/ikecipher"}}
+	esp={{getv "/espcipher"}}
 	keyingtries=%forever
 
 conn site-static-ip
 	also=sts-base
-	keyexchange=ikev2
+	keyexchange={{getv "/keyexchange"}}
 	leftsubnet={{getv "/localnet"}}
 	left={{getv "/localprivip"}}
 	leftid={{getv "/localpubip"}}

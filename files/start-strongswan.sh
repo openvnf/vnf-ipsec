@@ -55,6 +55,9 @@ then
       [ -z "$IPSEC_LOCALPRIVIP" ] && { echo "Need to set IPSEC_LOCALPRIVIP"; exit 1; }
       [ -z "$IPSEC_LOCALPUBIP" ] && { echo "Need to set IPSEC_LOCALPUBIP"; exit 1; }
       [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
+      [ -z "$IPSEC_KEYEXCHANGE" ] && { echo "Need to set IPSEC_KEYEXCHANGE"; exit 1; }
+      [ -z "$IPSEC_ESPCIPHER" ] && { echo "Need to set IPSEC_ESPCIPHER"; exit 1; }
+      [ -z "$IPSEC_IKECIPHER" ] && { echo "Need to set IPSEC_IKECIPHER"; exit 1; }
       return 0
     }
 
