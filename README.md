@@ -43,11 +43,15 @@ USE_ENV_CONFIG=AWS
 # use this just in conjunction with calico and host networking
 SET_ROUTE_DEFAULT_TABLE=FALSE
 
-# local private IP of the AWS node the container is supposed to be running on
-IPSEC_LOCALPRIVIP=
+# local IP of the node the container is supposed to be running on
+# this IP has to able to be bound by the service and could also be '%any'
+IPSEC_LOCALIP=
 
-# corresponding local public IP of the AWS node
-IPSEC_LOCALPUBIP=
+# The local identifier to be used during the handshake.
+# This can either be an IP address, a FQDN, an email address or a distinguished
+# name. This value has to be the same as IPSEC_REMOTEID on the other side of
+# the tunnel.
+IPSEC_LOCALID=
 
 # local network to be shared over the VPN tunnel
 # used for leftid=
@@ -58,6 +62,9 @@ IPSEC_REMOTEIP=
 
 # remote network to be shared
 IPSEC_REMOTENET=
+
+# the remote identifier for the connection
+IPSEC_REMOTEID=
 
 # pre shared key to be used for the tunnel
 # this should be a long random string
