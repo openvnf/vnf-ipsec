@@ -39,10 +39,11 @@ conn site-static-ip
 	also=sts-base
 	keyexchange={{getv "/keyexchange"}}
 	leftsubnet={{getv "/localnet"}}
-	left={{getv "/localprivip"}}
-	leftid={{getv "/localpubip"}}
+	left={{getv "/localip"}}
+	leftid={{getv "/localid"}}
 	rightsubnet={{getv "/remotenet"}}
 	right={{getv "/remoteip"}}
+    rightid={{getv "/remoteid"}}
 	auto=route
 	leftauth=psk
 	rightauth=psk

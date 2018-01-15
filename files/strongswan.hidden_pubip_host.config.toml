@@ -3,9 +3,10 @@ src = "ipsec.hidden_pubip_host.conf.tmpl"
 prefix = "/ipsec"
 dest = "/etc/ipsec.config.d/ipsec.hidden_pubip_host.conf"
 keys = [
-    "/localprivip",
-    "/localpubip",
+    "/localip",
+    "/localid",
     "/remoteip",
+    "/remoteid",
     "/localnet",
     "/remotenet",
     "/keyexchange",
