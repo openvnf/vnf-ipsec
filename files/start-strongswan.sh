@@ -22,9 +22,11 @@ _start_strongswan() {
     wait "$child"
 }
 
+# Set default mode
+: ${USE_ENV_CONFIG:=HIDDEN_PUBIP_HOST}
+
 if [ -n "$USE_ENV_CONFIG" ] && [ "$USE_ENV_CONFIG" = "HIDDEN_PUBIP_HOST" ]
 then
-    # Use AWS config template
     _remove_route() {
         echo "ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP"
         ip route del $IPSEC_REMOTENET via $DEFAULTROUTER dev eth0 proto static src $IPSEC_LOCALPRIVIP
@@ -48,6 +50,15 @@ then
         exit 0
     }
 
+    _set_default_variables() {
+        : ${IPSEC_REMOTE_IP:=%any}
+        : ${IPSEC_LOCALIP:=%any}
+        : ${IPSEC_KEYEXCHANGE:=ikev2}
+        : ${IPSEC_ESPCIPHER:=aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
+        : ${IPSEC_IKECIPHER:=aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
+        return 0
+    }
+
     _check_variables() {
       [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
       [ -z "$IPSEC_PSK" ] && { echo "Need to set IPSEC_PSK"; exit 1; }
@@ -62,9 +73,27 @@ then
       return 0
     }
 
+    _print_variables() {
+        echo "======= set variables ======="
+        printf "IPSEC_LOCALNET = %s\n" $IPSEC_LOCALNET
+        printf "IPSEC_LOCALIP = %s\n" $IPSEC_LOCALIP
+        printf "IPSEC_LOCALID = %s\n" $IPSEC_LOCALID
+        printf "IPSEC_REMOTEID = %s\n" $IPSEC_REMOTEID
+        printf "IPSEC_REMOTEIP = %s\n" $IPSEC_REMOTEIP
+        printf "IPSEC_REMOTENET = %s\n" $IPSEC_REMOTENET
+        printf "IPSEC_PSK = %s\n" $IPSEC_PSK
+        printf "IPSEC_KEYEXCHANGE = %s\n" $IPSEC_KEYEXCHANGE
+        printf "IPSEC_ESPCIPHER = %s\n" $IPSEC_ESPCIPHER
+        printf "IPSEC_IKECIPHER = %s\n" $IPSEC_IKECIPHER
+        return 0
+    }
+
     trap _term TERM INT
 
+    _set_default_variables
     _check_variables
+
+    _print_variables
 
     _config
 
