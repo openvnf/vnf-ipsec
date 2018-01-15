@@ -35,11 +35,8 @@ To run the container execute the following section:
 You have to create a file containing the environmental variables you want to configure:
 
 ```sh
-# configuration variables for Strongswan VPN image
-# set this variable to switch to env-var mode for AWS
-USE_ENV_CONFIG=AWS
-
-# set route for tunnel into the default routing table outside of the scope of strongswan
+# set route for tunnel into the default routing table outside of the scope of
+# table 220
 # use this just in conjunction with calico and host networking
 SET_ROUTE_DEFAULT_TABLE=FALSE
 
@@ -93,5 +90,6 @@ IPSEC_IKECIPHER=
 IPSEC_FORCEUDP=
 ```
 
-If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
+If usage of keys and certificates instead of pre shared keys should be used,
+the code of the repo has to be extended.
 
