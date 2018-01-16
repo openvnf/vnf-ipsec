@@ -1,7 +1,7 @@
 [template]
-src = "ipsec.hidden_pubip_host.conf.tmpl"
+src = "ipsec.psk-template.conf.tmpl"
 prefix = "/ipsec"
-dest = "/etc/ipsec.config.d/ipsec.hidden_pubip_host.conf"
+dest = "/etc/ipsec.config.d/ipsec.psk-template.conf"
 keys = [
     "/localip",
     "/localid",
