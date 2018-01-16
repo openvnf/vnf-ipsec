@@ -49,11 +49,11 @@ _term() {
 }
 
 _set_default_variables() {
-    : ${IPSEC_REMOTEIP:=%any}
-    : ${IPSEC_LOCALIP:=%any}
-    : ${IPSEC_KEYEXCHANGE:=ikev2}
-    : ${IPSEC_ESPCIPHER:=aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
-    : ${IPSEC_IKECIPHER:=aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
+    export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
+    export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
+    export IPSEC_KEYEXCHANGE=${IPSEC_KEYEXCHANGE:-ikev2}
+    export IPSEC_ESPCIPHER=${IPSEC_ESPCIPHER:-aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
+    export IPSEC_IKECIPHER=${IPSEC_IKECIPHER:-aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
     return 0
 }
 

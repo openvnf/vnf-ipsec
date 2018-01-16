@@ -89,8 +89,8 @@ IPSEC_IKECIPHER=
 IPSEC_FORCEUDP=
 
 
-# set the debug flag for additional debugging output
-# DEBUG=
+# uncomment the debug flag for additional debugging output
+# DEBUG=yes
 ```
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
