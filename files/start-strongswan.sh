@@ -1,6 +1,38 @@
 #!/bin/sh
 set -eo pipefail
 
+_initialize() {
+    echo "Start: run initializations."
+    _create_vti
+    echo "End: run initializations."
+}
+
+_create_vti() {
+
+# set charon.install_virtual_ip = no to prevent the daemon from also installing the VIP
+
+    if [ -n "$IPSEC_VTI_KEY" ]
+    echo "IPSEC_VTI_KEY set, creating VTI interface."
+    then
+        set -o nounset
+        set -e
+        set -x
+
+        echo "Start: load ip_vti kernel module."
+        modprobe ip_vti
+        echo "End: load ip_vti kernel module."
+
+        VTI_IF="vti${IPSEC_VTI_KEY}"
+
+        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY}
+        ip link set "${VTI_IF}" up
+        ip addr add ${IPSEC_LOCALIP} dev "${VTI_IF}"
+        ip route change default dev "${VTI_IF}"
+        sysctl -w "net.ipv4.conf.${VTI_IF}.disable_policy=1"
+
+    fi
+}
+
 _config() {
     echo "======= Create config ======="
 
@@ -14,7 +46,7 @@ _config() {
     then
         echo "======= Config ======="
         cat /etc/ipsec.config.d/*.conf
-    fi 
+    fi
 }
 
 _start_strongswan() {
@@ -49,8 +81,12 @@ _term() {
 }
 
 _set_default_variables() {
-    export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
-    export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
+    # local and remote IP can not be "%any" if VTI needs to be created
+    if [ -z $IPSEC_VTI_KEY ]
+    then
+        export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
+        export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
+    fi
     export IPSEC_KEYEXCHANGE=${IPSEC_KEYEXCHANGE:-ikev2}
     export IPSEC_ESPCIPHER=${IPSEC_ESPCIPHER:-aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
     export IPSEC_IKECIPHER=${IPSEC_IKECIPHER:-aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
@@ -58,16 +94,23 @@ _set_default_variables() {
 }
 
 _check_variables() {
-  [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
-  [ -z "$IPSEC_PSK" ] && { echo "Need to set IPSEC_PSK"; exit 1; }
-  [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
-  [ -z "$IPSEC_REMOTEID" ] && { echo "Need to set IPSEC_REMOTEID"; exit 1; }
-  [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
-  [ -z "$IPSEC_LOCALID" ] && { echo "Need to set IPSEC_LOCALID"; exit 1; }
-  [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
-  [ -z "$IPSEC_KEYEXCHANGE" ] && { echo "Need to set IPSEC_KEYEXCHANGE"; exit 1; }
-  [ -z "$IPSEC_ESPCIPHER" ] && { echo "Need to set IPSEC_ESPCIPHER"; exit 1; }
-  [ -z "$IPSEC_IKECIPHER" ] && { echo "Need to set IPSEC_IKECIPHER"; exit 1; }
+  # we only need two varaiables for init-containers
+  if [ -n $IPSEC_VTI_KEY ]
+  then
+      [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
+      [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
+  else
+      [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
+      [ -z "$IPSEC_PSK" ] && { echo "Need to set IPSEC_PSK"; exit 1; }
+      [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
+      [ -z "$IPSEC_REMOTEID" ] && { echo "Need to set IPSEC_REMOTEID"; exit 1; }
+      [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
+      [ -z "$IPSEC_LOCALID" ] && { echo "Need to set IPSEC_LOCALID"; exit 1; }
+      [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
+      [ -z "$IPSEC_KEYEXCHANGE" ] && { echo "Need to set IPSEC_KEYEXCHANGE"; exit 1; }
+      [ -z "$IPSEC_ESPCIPHER" ] && { echo "Need to set IPSEC_ESPCIPHER"; exit 1; }
+      [ -z "$IPSEC_IKECIPHER" ] && { echo "Need to set IPSEC_IKECIPHER"; exit 1; }
+  fi
   return 0
 }
 
@@ -83,6 +126,7 @@ _print_variables() {
     printf "IPSEC_KEYEXCHANGE=%s\n" $IPSEC_KEYEXCHANGE
     printf "IPSEC_ESPCIPHER=%s\n" $IPSEC_ESPCIPHER
     printf "IPSEC_IKECIPHER=%s\n" $IPSEC_IKECIPHER
+    printf "IPSEC_VTI_KEY=%s\n" $IPSEC_VTI_KEY
     return 0
 }
 
@@ -95,6 +139,12 @@ _set_default_variables
 _check_variables
 
 _print_variables
+
+if [ "$1" = "init" ]
+then
+    _initialize
+    exit 0
+fi
 
 _config
 
