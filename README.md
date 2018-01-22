@@ -97,3 +97,12 @@ IPSEC_FORCEUDP=
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
 
+### VTI Interface
+
+To create a VTI interface, the container has to be started in `init`-mode (`command: /usr/local/bin/start-strongswan.sh init`)
+and the environment variable `IPSEC_VTI_KEY` has to be set to an integer.
+
+A VTI tunnel interface is then created with `IPSEC_LOCALIP` and `IPSEC_REMOTEIP` as endpoints and `IPSEC_VTI_KEY` as key.
+
+The parameter `IPSEC_VTI_KEY` must then be the same when starting the container in default mode to set the value as mark in the
+IPSec connection configuration.
