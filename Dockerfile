@@ -30,6 +30,5 @@ ADD config/*.tmpl /etc/confd/templates/
 ADD files/strongswan.psk-template.config.toml /etc/confd/conf.d.disabled/
 ADD files/strongswan.psk-template.secret.toml /etc/confd/conf.d.disabled/
 ADD files/start-strongswan.sh /usr/local/bin
-ADD files/charon.conf /etc/strongswan.d/
 
 ENTRYPOINT ["/usr/local/bin/start-strongswan.sh"]

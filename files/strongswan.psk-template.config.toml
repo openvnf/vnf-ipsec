@@ -13,4 +13,5 @@ keys = [
     "/espcipher",
     "/ikecipher",
     "/forceudp"
+    "/vti_key"
 ]
