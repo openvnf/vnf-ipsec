@@ -19,8 +19,6 @@ For other architectures, the code might have to be changed.
 
 ### Run this container
 
-Afterwards create a file containing the environmental variables to run this
-container as described below.
 To run the container execute the following section:
 
 ```
@@ -32,9 +30,13 @@ To run the container execute the following section:
 
 ### Configuration
 
-You have to create a file containing the environmental variables you want to configure:
+Configuration is done by environment variables. See below for available options.
+Alternatively it is also possible to point $ENVFILE to an environment file which is sourced before startup.
 
 ```sh
+# source specified file before startup.
+ENVFILE=
+
 # set route for tunnel into the default routing table outside of the scope of strongswan
 # use this just in conjunction with calico and host networking
 SET_ROUTE_DEFAULT_TABLE=FALSE

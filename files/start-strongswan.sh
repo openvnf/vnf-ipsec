@@ -88,6 +88,9 @@ _print_variables() {
 
 trap _term TERM INT
 
+# hook to initialize environment by file
+[ -r "$ENVFILE" ] && . $ENVFILE
+
 _set_default_variables
 _check_variables
 
