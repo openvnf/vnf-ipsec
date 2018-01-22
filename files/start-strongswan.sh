@@ -54,6 +54,24 @@ _set_default_variables() {
     export IPSEC_KEYEXCHANGE=${IPSEC_KEYEXCHANGE:-ikev2}
     export IPSEC_ESPCIPHER=${IPSEC_ESPCIPHER:-aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
     export IPSEC_IKECIPHER=${IPSEC_IKECIPHER:-aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
+
+    if [ -z "$IPSEC_REMOTEID" ] && [ "$IPSEC_REMOTEIP" == "%any" ]
+    then
+        echo "if IPSEC_REMOTEIP is not set by the user, IPSEC_REMOTEID has to be set manually"
+        exit 1
+    elif [ -z "$IPSEC_REMOTEID" ]
+    then
+        export IPSEC_REMOTEID=$IPSEC_REMOTEIP
+    fi
+
+    if [ -z "$IPSEC_LOCALID" ] && [ "$IPSEC_LOCALIP" == "%any" ]
+    then
+        echo "if IPSEC_LOCALIP is not set by the user, IPSEC_LOCALID has to be set manually"
+        exit 1
+    elif [ -z "$IPSEC_LOCALID" ]
+    then
+        export IPSEC_LOCALID=$IPSEC_LOCALIP
+    fi
     return 0
 }
 
