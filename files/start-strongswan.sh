@@ -24,7 +24,7 @@ _create_vti() {
 
         VTI_IF="vti${IPSEC_VTI_KEY}"
 
-        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY}
+        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY} || true
         ip link set "${VTI_IF}" up
         ip addr add ${IPSEC_LOCALIP} dev "${VTI_IF}"
         ip route change default dev "${VTI_IF}"
