@@ -27,7 +27,7 @@ _create_vti() {
         ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY} || true
         ip link set "${VTI_IF}" up
         ip addr add ${IPSEC_LOCALIP} dev "${VTI_IF}" || true
-        ip route change default dev "${VTI_IF}"
+        ip route add ${IPSEC_REMOTENET} dev "${VTI_IF}" || true
         sysctl -w "net.ipv4.conf.${VTI_IF}.disable_policy=1"
 
     fi
@@ -100,6 +100,7 @@ _check_variables() {
   then
       [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
       [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
+      [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
   else
       [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
       [ -z "$IPSEC_PSK" ] && { echo "Need to set IPSEC_PSK"; exit 1; }
