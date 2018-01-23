@@ -47,6 +47,6 @@ conn site-static-ip
 	auto=route
 	leftauth=psk
 	rightauth=psk
-	{{if exists "/vti/key"}}
+	{{if exists "/vti/key" -}}
 	mark={{getv "/vti/key"}}
-	{{end}}
+	{{- end}}
