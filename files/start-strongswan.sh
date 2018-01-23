@@ -40,6 +40,7 @@ _config() {
     # different templates might be used in the future depending on
     # configured values
     cp /etc/confd/conf.d.disabled/*.psk-template.* /etc/confd/conf.d
+    cp /etc/confd/conf.d.disabled/charon.* /etc/confd/conf.d
 
     confd -onetime -backend env
     if [ -n "$DEBUG" ]

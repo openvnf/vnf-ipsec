@@ -29,6 +29,7 @@ ADD files/ipsec.secrets /etc/ipsec.secrets
 ADD config/*.tmpl /etc/confd/templates/
 ADD files/strongswan.psk-template.config.toml /etc/confd/conf.d.disabled/
 ADD files/strongswan.psk-template.secret.toml /etc/confd/conf.d.disabled/
+ADD files/charon.conf.toml /etc/confd/conf.d.disabled/
 ADD files/start-strongswan.sh /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/start-strongswan.sh"]
