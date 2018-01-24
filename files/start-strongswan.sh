@@ -29,7 +29,7 @@ _create_vti() {
 
         # add routes through the VTI interface
         IFS=","
-        for route in ${IPSEC_REMOTENET}
+        for route in ${IPSEC_VTI_STATICROUTES}
         do
             ip route add ${route} dev "${VTI_IF}" || true
         done
