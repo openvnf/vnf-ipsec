@@ -99,10 +99,20 @@ If usage of keys and certificates instead of pre shared keys should be used, the
 
 ### VTI Interface
 
-To create a VTI interface, the container has to be started in `init`-mode (`command: /usr/local/bin/start-strongswan.sh init`)
-and the environment variable `IPSEC_VTI_KEY` has to be set to an integer.
+Related environment variables:
+* IPSEC_LOCALIP
+* IPSEC_REMOTEIP
+* IPSEC_VTI_KEY
+* IPSEC_VTI_STATICROUTES
+
+If the entrypoint is provided the argument `init`, an initialisation-container is started that can create a VTI tunnel to route
+the IPSEC traffic over.
+
+To create a VTI interface, set the environment variable `IPSEC_VTI_KEY` to an integer.
 
 A VTI tunnel interface is then created with `IPSEC_LOCALIP` and `IPSEC_REMOTEIP` as endpoints and `IPSEC_VTI_KEY` as key.
 
 The parameter `IPSEC_VTI_KEY` must then be the same when starting the container in default mode to set the value as mark in the
 IPSec connection configuration.
+
+All comma-separated values of `IPSEC_VTI_STATICROUTES` are added as static routes via the created VTI tunnel.
