@@ -26,8 +26,14 @@ _create_vti() {
 
         ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY} || true
         ip link set "${VTI_IF}" up
-#        ip addr add ${IPSEC_LOCALIP} dev "${VTI_IF}" || true
-        ip route add ${IPSEC_REMOTENET} dev "${VTI_IF}" || true
+
+        # add routes through the VTI interface
+        IFS=","
+        for route in ${IPSEC_REMOTENET}
+        do
+            ip route add ${route} dev "${VTI_IF}" || true
+        done
+
         sysctl -w "net.ipv4.conf.${VTI_IF}.disable_policy=1"
 
     fi
