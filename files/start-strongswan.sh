@@ -18,7 +18,7 @@ _create_vti() {
         set -e
 
         echo "Start: load ip_vti kernel module."
-        if lsmod | grep -e "^ip_vti\>" &> /dev/null ; then
+        if grep -qe "^ip_vti\>" /proc/modules; then
           echo "VTI module already loaded."
         else
           echo "Loading VTI module."
