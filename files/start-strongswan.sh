@@ -21,7 +21,7 @@ _create_vti() {
           echo "VTI module already loaded."
         else
           echo "Loading VTI module."
-          modprobe ip_vti
+          modprobe ip_vti || true
         fi
         echo "End: load ip_vti kernel module."
 
