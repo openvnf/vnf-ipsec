@@ -16,7 +16,6 @@ _create_vti() {
     then
         set -o nounset
         set -e
-        set -x
 
         echo "Start: load ip_vti kernel module."
         modprobe ip_vti
@@ -89,7 +88,7 @@ _term() {
 
 _set_default_variables() {
     # local and remote IP can not be "%any" if VTI needs to be created
-    if [ -z $IPSEC_VTI_KEY ]
+    if [ -z "$IPSEC_VTI_KEY" ]
     then
         export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
         export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
@@ -102,7 +101,7 @@ _set_default_variables() {
 
 _check_variables() {
   # we only need two varaiables for init-containers
-  if [ -n $IPSEC_VTI_KEY ]
+  if [ -n "$IPSEC_VTI_KEY" ]
   then
       [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
       [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
@@ -135,6 +134,7 @@ _print_variables() {
     printf "IPSEC_ESPCIPHER=%s\n" $IPSEC_ESPCIPHER
     printf "IPSEC_IKECIPHER=%s\n" $IPSEC_IKECIPHER
     printf "IPSEC_VTI_KEY=%s\n" $IPSEC_VTI_KEY
+    printf "IPSEC_STATICROUTES=%s\n" $IPSEC_STATICROUTES
     return 0
 }
 
