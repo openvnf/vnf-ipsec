@@ -101,7 +101,6 @@ If usage of keys and certificates instead of pre shared keys should be used, the
 
 Related environment variables:
 * IPSEC_LOCALIP
-* IPSEC_REMOTEIP
 * IPSEC_VTI_KEY
 * IPSEC_VTI_STATICROUTES
 
@@ -110,7 +109,7 @@ the IPSEC traffic over.
 
 To create a VTI interface, set the environment variable `IPSEC_VTI_KEY` to an integer.
 
-A VTI tunnel interface is then created with `IPSEC_LOCALIP` and `IPSEC_REMOTEIP` as endpoints and `IPSEC_VTI_KEY` as key.
+A VTI tunnel interface is then created with `IPSEC_LOCALIP` as local endpoint and `IPSEC_VTI_KEY` as key.
 
 The parameter `IPSEC_VTI_KEY` must then be the same when starting the container in default mode to set the value as mark in the
 IPSec connection configuration.

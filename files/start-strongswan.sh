@@ -28,7 +28,7 @@ _create_vti() {
 
         VTI_IF="vti${IPSEC_VTI_KEY}"
 
-        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY} || true
+        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} mode vti key ${IPSEC_VTI_KEY} || true
         ip link set "${VTI_IF}" up
 
         # add routes through the VTI interface
@@ -95,9 +95,9 @@ _set_default_variables() {
     # local and remote IP can not be "%any" if VTI needs to be created
     if [ -z "$IPSEC_VTI_KEY" ]
     then
-        export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
         export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
     fi
+    export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
     export IPSEC_KEYEXCHANGE=${IPSEC_KEYEXCHANGE:-ikev2}
     export IPSEC_ESPCIPHER=${IPSEC_ESPCIPHER:-aes192gcm16-aes128gcm16-ecp256,aes192-sha256-modp3072}
     export IPSEC_IKECIPHER=${IPSEC_IKECIPHER:-aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072}
@@ -109,7 +109,6 @@ _check_variables() {
   if [ -n "$IPSEC_VTI_KEY" ]
   then
       [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
-      [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
       [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
   else
       [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
