@@ -18,7 +18,12 @@ _create_vti() {
         set -e
 
         echo "Start: load ip_vti kernel module."
-        modprobe ip_vti
+        if lsmod | grep -e "^ip_vti\>" &> /dev/null ; then
+          echo "VTI module already loaded."
+        else
+          echo "Loading VTI module."
+          modprobe ip_vti
+        fi
         echo "End: load ip_vti kernel module."
 
         VTI_IF="vti${IPSEC_VTI_KEY}"
