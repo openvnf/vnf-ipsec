@@ -11,9 +11,8 @@ _create_vti() {
 
 # set charon.install_virtual_ip = no to prevent the daemon from also installing the VIP
 
-    if [ -n "$IPSEC_VTI_KEY" ]
-    echo "IPSEC_VTI_KEY set, creating VTI interface."
-    then
+    if [ -n "$IPSEC_VTI_KEY" ]; then
+        echo "IPSEC_VTI_KEY set, creating VTI interface."
         set -o nounset
         set -e
 
@@ -33,8 +32,7 @@ _create_vti() {
 
         # add routes through the VTI interface
         IFS=","
-        for route in ${IPSEC_VTI_STATICROUTES}
-        do
+        for route in ${IPSEC_VTI_STATICROUTES}; do
             ip route add ${route} dev "${VTI_IF}" || true
         done
 
@@ -93,8 +91,7 @@ _term() {
 
 _set_default_variables() {
     # local and remote IP can not be "%any" if VTI needs to be created
-    if [ -z "$IPSEC_VTI_KEY" ]
-    then
+    if [ -z "$IPSEC_VTI_KEY" ]; then
         export IPSEC_LOCALIP=${IPSEC_LOCALIP:-%any}
     fi
     export IPSEC_REMOTEIP=${IPSEC_REMOTEIP:-%any}
@@ -106,8 +103,7 @@ _set_default_variables() {
 
 _check_variables() {
   # we only need two varaiables for init-containers
-  if [ -n "$IPSEC_VTI_KEY" ]
-  then
+  if [ -n "$IPSEC_VTI_KEY" ]; then
       [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
       [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
   else
@@ -152,8 +148,7 @@ _check_variables
 
 _print_variables
 
-if [ "$1" = "init" ]
-then
+if [ "$1" = "init" ]; then
     _initialize
     exit 0
 fi
