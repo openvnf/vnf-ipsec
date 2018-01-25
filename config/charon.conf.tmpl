@@ -146,10 +146,16 @@ charon {
     # Install routes into a separate routing table for established IPsec
     # tunnels.
     # install_routes = yes
+    {{if exists "/vti/key" -}}
+    install_routes = no
+    {{- end}}
 
     # Install virtual IP addresses.
+    # has to be "no" if a VTI interface is used.
     # install_virtual_ip = yes
-
+    {{if exists "/vti/key" -}}
+    install_virtual_ip = no
+    {{- end}}
     # The name of the interface on which virtual IP addresses should be
     # installed.
     # install_virtual_ip_on =

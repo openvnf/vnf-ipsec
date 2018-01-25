@@ -33,7 +33,7 @@ conn sts-base
 	ike={{getv "/ikecipher"}}
 	esp={{getv "/espcipher"}}
 	keyingtries=%forever
-    forceencaps={{getv "/forceudp" "yes"}}
+	forceencaps={{getv "/forceudp" "yes"}}
 
 conn site-static-ip
 	also=sts-base
@@ -43,7 +43,10 @@ conn site-static-ip
 	leftid={{getv "/localid"}}
 	rightsubnet={{getv "/remotenet"}}
 	right={{getv "/remoteip"}}
-    rightid={{getv "/remoteid"}}
+	rightid={{getv "/remoteid"}}
 	auto=route
 	leftauth=psk
 	rightauth=psk
+	{{if exists "/vti/key" -}}
+	mark={{getv "/vti/key"}}
+	{{- end}}

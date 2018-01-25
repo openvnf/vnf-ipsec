@@ -16,7 +16,7 @@ RUN wget -O /tmp/confd.zip https://github.com/kelseyhightower/confd/archive/v0.1
 FROM alpine:latest
 LABEL maintainer="tobias.famulla@travelping.com"
 
-RUN apk add --update --no-cache strongswan tcpdump iputils && \
+RUN apk add --update --no-cache strongswan tcpdump iputils iproute2 && \
         mkdir -p /etc/ipsec.secrets.d && \
         mkdir -p /etc/ipsec.config.d && \
         mkdir -p /etc/confd/conf.d && \
@@ -29,7 +29,7 @@ ADD files/ipsec.secrets /etc/ipsec.secrets
 ADD config/*.tmpl /etc/confd/templates/
 ADD files/strongswan.psk-template.config.toml /etc/confd/conf.d.disabled/
 ADD files/strongswan.psk-template.secret.toml /etc/confd/conf.d.disabled/
+ADD files/charon.conf.toml /etc/confd/conf.d.disabled/
 ADD files/start-strongswan.sh /usr/local/bin
-ADD files/charon.conf /etc/strongswan.d/
 
 ENTRYPOINT ["/usr/local/bin/start-strongswan.sh"]
