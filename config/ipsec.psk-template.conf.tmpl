@@ -34,8 +34,8 @@ conn sts-base
 	esp={{getv "/espcipher"}}
 	keyingtries=%forever
 	forceencaps={{getv "/forceudp" "yes"}}
-	lifetime={{getv "/lifetime" 3600}}
-	ikelifetime={{getv "/ikelifetime" 10800}}
+	lifetime={{getv "/lifetime" "3600"}}
+	ikelifetime={{getv "/ikelifetime" "10800"}}
 
 conn site-static-ip
 	also=sts-base
