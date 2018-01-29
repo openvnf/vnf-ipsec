@@ -86,6 +86,16 @@ IPSEC_ESPCIPHER=
 # example: aes192gcm16-aes128gcm16-prfsha256-ecp256-ecp521,aes192-sha256-modp3072
 IPSEC_IKECIPHER=
 
+# how long a particular instance of a connection (a set of encryption/authentication keys for user packets)
+# should last, from successful negotiation to expiry; acceptable values are an integer optionally followed by
+# s (a time in seconds) or a decimal number followed by m, h, or d (a time in minutes, hours,
+# or days respectively) (default 1h, maximum 24h).
+IPSEC_LIFETIME=
+
+# how long the keying channel of a connection (ISAKMP or IKE SA) should last before being renegotiated.
+# Default: 3h
+IPSEC_IKELIFETIME=
+
 # Force UDP encapsulation for ESP packets even if no NAT situation is detected.
 # *yes* | no
 IPSEC_FORCEUDP=
