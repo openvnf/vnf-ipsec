@@ -134,7 +134,7 @@ _print_variables() {
     printf "IPSEC_ESPCIPHER=%s\n" $IPSEC_ESPCIPHER
     printf "IPSEC_IKECIPHER=%s\n" $IPSEC_IKECIPHER
     printf "IPSEC_VTI_KEY=%s\n" $IPSEC_VTI_KEY
-    printf "IPSEC_STATICROUTES=%s\n" $IPSEC_STATICROUTES
+    printf "IPSEC_VTI_STATICROUTES=%s\n" $IPSEC_VTI_STATICROUTES
     return 0
 }
 
