@@ -27,7 +27,7 @@ _create_vti() {
 
         VTI_IF="vti${IPSEC_VTI_KEY}"
 
-        ip tunnel add "${VTI_IF}" local ${IPSEC_LOCALIP} mode vti key ${IPSEC_VTI_KEY} || true
+        ip tunnel add "${VTI_IF}" remote ${IPSEC_REMOTEIP} mode vti key ${IPSEC_VTI_KEY} || true
         ip link set "${VTI_IF}" up
 
         # add routes through the VTI interface
@@ -104,7 +104,7 @@ _set_default_variables() {
 _check_variables() {
   # we only need two varaiables for init-containers
   if [ -n "$IPSEC_VTI_KEY" ]; then
-      [ -z "$IPSEC_LOCALIP" ] && { echo "Need to set IPSEC_LOCALIP"; exit 1; }
+      [ -z "$IPSEC_REMOTEIP" ] && { echo "Need to set IPSEC_REMOTEIP"; exit 1; }
       [ -z "$IPSEC_REMOTENET" ] && { echo "Need to set IPSEC_REMOTENET"; exit 1; }
   else
       [ -z "$IPSEC_LOCALNET" ] && { echo "Need to set IPSEC_LOCALNET"; exit 1; }
