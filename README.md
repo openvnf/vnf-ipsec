@@ -110,9 +110,10 @@ If usage of keys and certificates instead of pre shared keys should be used, the
 ### VTI Interface
 
 Related environment variables:
-* IPSEC_LOCALIP
-* IPSEC_VTI_KEY
-* IPSEC_VTI_STATICROUTES
+
+* `IPSEC_LOCALIP`
+* `IPSEC_VTI_KEY`
+* `IPSEC_VTI_STATICROUTES`
 
 If the entrypoint is provided the argument `init`, an initialisation-container is started that can create a VTI tunnel to route
 the IPSEC traffic over.
