@@ -7,7 +7,7 @@ _initialize() {
     echo "End: run initializations."
 }
 
-_create_vti() {
+_create_vti(){
 
 # set charon.install_virtual_ip = no to prevent the daemon from also installing the VIP
 
@@ -39,9 +39,11 @@ _create_vti() {
 
         # vti interface address configuration
         if [ -n "$IPSEC_VTI_IPADDR_LOCAL" -a -n "$IPSEC_VTI_IPADDR_PEER" ]; then
+            echo "Configuring local/peer ($IPSEC_VTI_IPADDR_LOCAL/$IPSEC_VTI_IPADDR_PEER) addresses on $VTI_IF."
             ip addr add $IPSEC_VTI_IPADDR_LOCAL peer $IPSEC_VTI_IPADDR_PEER dev $VTI_IF
         fi
 
+        echo "Setting net.ipv4.conf.${VTI_IF}.disable_policy=1"
         sysctl -w "net.ipv4.conf.${VTI_IF}.disable_policy=1"
 
     fi
