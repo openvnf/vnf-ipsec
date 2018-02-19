@@ -114,6 +114,8 @@ Related environment variables:
 * `IPSEC_LOCALIP`
 * `IPSEC_VTI_KEY`
 * `IPSEC_VTI_STATICROUTES`
+* `IPSEC_VTI_IPADDR_LOCAL`
+* `IPSEC_VTI_IPADDR_PEER`
 
 If the entrypoint is provided the argument `init`, an initialisation-container is started that can create a VTI tunnel to route
 the IPSEC traffic over.
@@ -126,3 +128,5 @@ The parameter `IPSEC_VTI_KEY` must then be the same when starting the container 
 IPSec connection configuration.
 
 All comma-separated values of `IPSEC_VTI_STATICROUTES` are added as static routes via the created VTI tunnel.
+
+To configure p2p addresses (local/peer) on the vti interface use $IPSEC_VTI_IPADDR_LOCAL and $IPSEC_VTI_IPADDR_PEER respectively.

@@ -35,6 +35,12 @@ _create_vti() {
         for route in ${IPSEC_VTI_STATICROUTES}; do
             ip route add ${route} dev "${VTI_IF}" || true
         done
+        unset IFS
+
+        # vti interface address configuration
+        if [ -n "$IPSEC_VTI_IPADDR_LOCAL" -a -n "$IPSEC_VTI_IPADDR_PEER" ]; then
+            ip addr add $IPSEC_VTI_IPADDR_LOCAL peer $IPSEC_VTI_IPADDR_PEER dev $VTI_IF
+        fi
 
         sysctl -w "net.ipv4.conf.${VTI_IF}.disable_policy=1"
 
@@ -118,6 +124,10 @@ _check_variables() {
       [ -z "$IPSEC_ESPCIPHER" ] && { echo "Need to set IPSEC_ESPCIPHER"; exit 1; }
       [ -z "$IPSEC_IKECIPHER" ] && { echo "Need to set IPSEC_IKECIPHER"; exit 1; }
   fi
+  if [ -n "$IPSEC_VTI_IPADDR_PEER" -a -z "$IPSEC_VTI_IPADDR_LOCAL" ]; then
+      echo "IPSEC_VTI_IPADDR_PEER cannot be used without IPSEC_VTI_IPADDR_LOCAL."
+      exit 1
+  fi
   return 0
 }
 
@@ -135,6 +145,8 @@ _print_variables() {
     printf "IPSEC_IKECIPHER=%s\n" $IPSEC_IKECIPHER
     printf "IPSEC_VTI_KEY=%s\n" $IPSEC_VTI_KEY
     printf "IPSEC_VTI_STATICROUTES=%s\n" $IPSEC_VTI_STATICROUTES
+    printf "IPSEC_VTI_IPADDR_LOCAL=%s\n" $IPSEC_VTI_IPADDR_LOCAL
+    printf "IPSEC_VTI_IPADDR_PEER=%s\n" $IPSEC_VTI_IPADDR_PEER
     return 0
 }
 
