@@ -13,7 +13,6 @@ _create_vti(){
 
     if [ -n "$IPSEC_VTI_KEY" ]; then
         echo "IPSEC_VTI_KEY set, creating VTI interface."
-        set -o nounset
         set -e
 
         echo "Start: load ip_vti kernel module."
@@ -31,11 +30,13 @@ _create_vti(){
         ip link set "${VTI_IF}" up
 
         # add routes through the VTI interface
-        IFS=","
-        for route in ${IPSEC_VTI_STATICROUTES}; do
-            ip route add ${route} dev "${VTI_IF}" || true
-        done
-        unset IFS
+        if [ -n "$IPSEC_VTI_STATICROUTES" ]; then
+            IFS=","
+            for route in ${IPSEC_VTI_STATICROUTES}; do
+                ip route add ${route} dev "${VTI_IF}" || true
+            done
+            unset IFS
+        fi
 
         # vti interface address configuration
         if [ -n "$IPSEC_VTI_IPADDR_LOCAL" -a -n "$IPSEC_VTI_IPADDR_PEER" ]; then
