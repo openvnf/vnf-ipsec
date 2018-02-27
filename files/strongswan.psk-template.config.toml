@@ -15,5 +15,6 @@ keys = [
     "/forceudp",
     "/vti_key",
     "/lifetime",
-    "/ikelifetime"
+    "/ikelifetime",
+    "/ikereauth"
 ]

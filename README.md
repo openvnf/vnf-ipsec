@@ -100,6 +100,9 @@ IPSEC_IKELIFETIME=
 # *yes* | no
 IPSEC_FORCEUDP=
 
+# Whether rekeying of an IKE_SA should also reauthenticate the peer.
+# *yes* | no
+IPSEC_IKEREAUTH=
 
 # uncomment the debug flag for additional debugging output
 # DEBUG=yes
