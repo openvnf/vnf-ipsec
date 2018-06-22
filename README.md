@@ -132,4 +132,4 @@ IPSec connection configuration.
 
 All comma-separated values of `IPSEC_VTI_STATICROUTES` are added as static routes via the created VTI tunnel.
 
-To configure p2p addresses (local/peer) on the vti interface use $IPSEC_VTI_IPADDR_LOCAL and $IPSEC_VTI_IPADDR_PEER respectively.
+To configure p2p addresses (local/peer) on the vti interface use `IPSEC_VTI_IPADDR_LOCAL` and `IPSEC_VTI_IPADDR_PEER` respectively.
