@@ -176,21 +176,23 @@ trap _term TERM INT
 # hook to initialize environment by file
 [ -r "$ENVFILE" ] && . $ENVFILE
 
-_set_default_variables
-_check_variables
+if [ -z "$IPSEC_USE_MANUAL_CONFIG" ]; then
+    _set_default_variables
+    _check_variables
 
-_print_variables
+    _print_variables
+    _config
 
-if [ "$1" = "init" ]; then
-    _initialize
-    exit 0
-fi
+    if [ "$1" = "init" ]; then
+        _initialize
+        exit 0
+    fi
 
-_config
 
-if  [ "$SET_ROUTE_DEFAULT_TABLE" = "TRUE" ]
-then
-    _add_route
+    if  [ "$SET_ROUTE_DEFAULT_TABLE" = "TRUE" ]
+    then
+        _add_route
+    fi
 fi
 
 _start_strongswan

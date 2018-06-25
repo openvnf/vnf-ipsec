@@ -110,6 +110,28 @@ IPSEC_IKEREAUTH=
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
 
+#### manual configuration
+
+It is also possible to not use environmental variables at all, but to mount
+a configuration for Strongswan, the used IPSEC component manually.
+
+Therefore the environmental variable `IPSEC_USE_MANUAL_CONFIG` has to be set
+to a non empty value, for example `TRUE`.
+
+To use the manual configuration, the corresponding files for the
+[ipsec.conf](https://wiki.strongswan.org/projects/strongswan/wiki/IpsecConf)
+and [ipsec.secrets](https://wiki.strongswan.org/projects/strongswan/wiki/IpsecSecrets)
+have to be created.
+
+By convention, Strongswan will read the configuration
+`/etc/ipsec.config.d/ipsec.<connectionn-name>.conf` and the secret from
+`/etc/ipsec.secrets.de/ipsec.<connection-name>.secrets`.
+
+Therefore it makes sense in conjunction with Kubernetes, to mount the secrets
+and the configurations to these folders.
+
+Never the less, you are able to overwrite `/etc/ipsec.conf` and `/etc/ipsec.secrets`.
+
 ### VTI Interface
 
 Related environment variables:
