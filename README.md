@@ -144,7 +144,7 @@ The following ENVVARs are available:
 * `$IPSEC_VTI_KEY`
 * `$IPSEC_INTERFACES`
 
-If you want to mount a configuration manually into the container, set `$IPSEC_MANUAL_CHARON=TRUE` to disable the configuration templating.
+If you want to mount a configuration manually into the container, set `$IPSEC_MANUAL_CHARON` to anything, eg. `$IPSEC_MANUAL_CHARON=True` (unset or set to empty string will disable the option).
 
 ### VTI Interface
 
