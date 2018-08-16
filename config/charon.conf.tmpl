@@ -169,13 +169,15 @@ charon {
 
     # A comma-separated list of network interfaces that should be used by
     # charon. All other interfaces are ignored.
-    # interfaces_use =
+    {{if exists "/interfaces" -}}
+    interfaces_use = {{getv "/interfaces" }}
+    {{- end }}
 
     # NAT keep alive interval.
     # keep_alive = 20s
 
     # Plugins to load in the IKE daemon charon.
-    # load =
+    load = mgf1,random,nonce,x509,revocation,constraints,pubkey,pkcs1,pkcs7,pkcs8,pkcs12,pgp,dnskey,sshkey,pem,openssl,fips-prf,gmp,curve25519,xcbc,cmac,curl,sqlite,attr,kernel-netlink,resolve,socket-default,stroke,vici,updown,eap-identity,eap-sim,eap-aka,eap-aka-3gpp2,eap-simaka-pseudonym,eap-simaka-reauth,eap-md5,eap-mschapv2,eap-radius,eap-tls,xauth-generic,xauth-eap,dhcp,unity,counters
 
     # Determine plugins to load via each plugin's load option.
     # load_modular = no

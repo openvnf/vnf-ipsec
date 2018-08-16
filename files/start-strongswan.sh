@@ -67,6 +67,22 @@ _config() {
     fi
 }
 
+_config_charon() {
+    echo "======= Create charon config ======="
+
+    # copies the template to be used
+    # different templates might be used in the future depending on
+    # configured values
+    cp /etc/confd/conf.d.disabled/charon.* /etc/confd/conf.d
+
+    confd -onetime -backend env
+    if [ -n "$DEBUG" ]
+    then
+        echo "======= Charon Config ======="
+        cat /etc/strongswan.d/charon.conf
+    fi
+}
+
 _start_strongswan() {
     echo "======= start VPN ======="
     set +eo pipefail
@@ -192,6 +208,10 @@ if [ -z "$IPSEC_USE_MANUAL_CONFIG" ]; then
     if  [ "$SET_ROUTE_DEFAULT_TABLE" = "TRUE" ]
     then
         _add_route
+    fi
+else
+    if [ -z "$IPSEC_MANUAL_CHARON" ]; then
+        _config_charon
     fi
 fi
 

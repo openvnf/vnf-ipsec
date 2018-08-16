@@ -3,5 +3,6 @@ src = "charon.conf.tmpl"
 prefix = "/ipsec"
 dest = "/etc/strongswan.d/charon.conf"
 keys = [
-    "/vti_key"
+    "/vti_key",
+    "/interfaces"
 ]
