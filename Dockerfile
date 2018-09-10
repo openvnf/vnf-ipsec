@@ -8,9 +8,10 @@ RUN mkdir -p /go/src/github.com/kelseyhightower/confd && \
 
 WORKDIR /app
 
-RUN wget -O /tmp/confd.tar.gz https://github.com/kelseyhightower/confd/archive/v${CONFD_VERSION}.tar.gz && \
-    tar --strip-components=1 -zxf -C /tmp/confd /tmp/confd.tar.gz && \
-    cp -r /tmp/confd/*/* /app && \
+ADD https://github.com/kelseyhightower/confd/archive/v${CONFD_VERSION}.tar.gz /tmp/confd.tar.gz
+RUN mkdir -p /tmp/confd && \
+    tar --strip-components=1 -zx -C /tmp/confd -f /tmp/confd.tar.gz && \
+    cp -r /tmp/confd/* /app && \
     rm -rf /tmp/confd* && \
     make build
 
