@@ -1,4 +1,6 @@
-FROM golang:1.9-alpine as confd
+FROM golang:1.11.0-alpine3.8 as confd
+
+ARG CONFD_VERSION=0.16.0
 
 RUN apk add --no-cache make unzip wget
 RUN mkdir -p /go/src/github.com/kelseyhightower/confd && \
@@ -6,14 +8,14 @@ RUN mkdir -p /go/src/github.com/kelseyhightower/confd && \
 
 WORKDIR /app
 
-RUN wget -O /tmp/confd.zip https://github.com/kelseyhightower/confd/archive/v0.14.0.zip && \
-    unzip -d /tmp/confd /tmp/confd.zip && \
+RUN wget -O /tmp/confd.tar.gz https://github.com/kelseyhightower/confd/archive/v${CONFD_VERSION}.tar.gz && \
+    tar --strip-components=1 -zxf -C /tmp/confd /tmp/confd.tar.gz && \
     cp -r /tmp/confd/*/* /app && \
     rm -rf /tmp/confd* && \
     make build
 
 
-FROM alpine:latest
+FROM alpine:3.8
 LABEL maintainer="tobias.famulla@travelping.com"
 
 RUN apk add --update --no-cache strongswan tcpdump iputils iproute2 && \
