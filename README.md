@@ -31,7 +31,7 @@ To run the container execute the following section:
 ### Configuration
 
 Configuration is done by environment variables. See below for available options.
-Alternatively it is also possible to point $ENVFILE to an environment file which is sourced before startup.
+Alternatively it is also possible to point `$ENVFILE` to an environment file which is sourced before startup.
 
 ```sh
 # source specified file before startup.
@@ -145,6 +145,33 @@ The following ENVVARs are available:
 * `$IPSEC_INTERFACES`
 
 If you want to mount a configuration manually into the container, set `$IPSEC_MANUAL_CHARON` to anything, eg. `$IPSEC_MANUAL_CHARON=True` (unset or set to empty string will disable the option).
+
+#### enable or disable additional modules
+
+Due to the large amount of possible module combinations in the *charon* IKE daemon,
+you have to configure these manually, if you need special settings.
+
+This includes enable plugins, which are not enabled by default and
+disable plugins, which are not disabled by default.
+
+To do so, you have to create a file with the module configuration.
+As a starting point you can retrieve the current configuration from the `/etc/strongswan.d/charon`
+folder of the container.
+
+One example would be the `farp` module configuration.
+The current default is:
+
+```
+farp {
+
+    # Whether to load the plugin. Can also be an integer to increase the
+    # priority of this plugin.
+    load = no
+}
+```
+
+To overwrite this, you have to mount the file to `/etc/strongswan.d/charon/farp.conf`
+after adding you settings.
 
 ### VTI Interface
 

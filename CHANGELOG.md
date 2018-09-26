@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.3.1
+
+* disable `farp` plugin by default, which was desired but not executed before
+
 ## v1.3.0
 
 * add variable for interfaces to bind to
