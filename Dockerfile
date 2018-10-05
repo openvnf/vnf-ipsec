@@ -1,5 +1,11 @@
 FROM alpine:3.8
-LABEL maintainer="tobias.famulla@travelping.com"
+LABEL   \
+        org.label-schema.name="travelping/ping-exporter" \
+        org.label-schema.vendor="Travelping GmbH" \
+        org.label-schema.description="Creates IPSEC connections to other sites or hosts using Strongswan" \
+        org.label-schema.url="https://github.com/openvnf/vnf-ipsec" \
+        org.label-schema.vcs-url="https://github.com/openvnf/vnf-ipsec" \
+        maintainer="tobias.famulla@travelping.com"
 
 RUN apk add --update --no-cache strongswan tcpdump iputils iproute2 wget && \
         mkdir -p /etc/ipsec.secrets.d && \
