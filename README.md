@@ -17,7 +17,7 @@ hosts `/lib/modules` into the container.
 
 For other architectures, the code might have to be changed.
 
-### Run this container
+## Run this container
 
 To run the container execute the following section:
 
@@ -28,7 +28,7 @@ To run the container execute the following section:
     openvnf/vnf-ipsec
 ```
 
-### Configuration
+## Configuration
 
 Configuration is done by environment variables. See below for available options.
 Alternatively it is also possible to point `$ENVFILE` to an environment file which is sourced before startup.
@@ -115,7 +115,7 @@ IPSEC_INTERFACES=eth0
 
 If usage of keys and certificates instead of pre shared keys should be used, the code of the repo has to be extended.
 
-#### manual configuration
+### manual configuration
 
 It is also possible to not use environmental variables at all, but to mount
 a configuration for Strongswan, the used IPSEC component manually.
@@ -146,7 +146,7 @@ The following ENVVARs are available:
 
 If you want to mount a configuration manually into the container, set `$IPSEC_MANUAL_CHARON` to anything, eg. `$IPSEC_MANUAL_CHARON=True` (unset or set to empty string will disable the option).
 
-#### enable or disable additional modules
+### enable or disable additional modules
 
 Due to the large amount of possible module combinations in the *charon* IKE daemon,
 you have to configure these manually, if you need special settings.
@@ -173,7 +173,7 @@ farp {
 To overwrite this, you have to mount the file to `/etc/strongswan.d/charon/farp.conf`
 after adding you settings.
 
-### VTI Interface
+## VTI Interface
 
 Related environment variables:
 
@@ -196,3 +196,13 @@ IPSec connection configuration.
 All comma-separated values of `IPSEC_VTI_STATICROUTES` are added as static routes via the created VTI tunnel.
 
 To configure p2p addresses (local/peer) on the vti interface use `IPSEC_VTI_IPADDR_LOCAL` and `IPSEC_VTI_IPADDR_PEER` respectively.
+
+## Development
+
+### freezing versions
+
+To upgrade the versions of the packages to new versions, you should run
+`apk update && apk upgrade` in a container of an already created image.
+
+To freeze the versions, execute `freeze_apk_versions` and copy the updated
+`/root/MANIFEST` to this repository and create a commit.

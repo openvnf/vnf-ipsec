@@ -6,6 +6,7 @@
 * remove usage of build container and use binary `confd` instead
 * update confd to `0.16.0`
 * build will fix *CVE-2018-17540*
+* add MANIFEST for freezing versions
 
 ## v1.3.1
 

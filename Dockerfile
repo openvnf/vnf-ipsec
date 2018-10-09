@@ -7,8 +7,10 @@ LABEL   \
         org.label-schema.vcs-url="https://github.com/openvnf/vnf-ipsec" \
         maintainer="tobias.famulla@travelping.com"
 
-RUN apk add --update --no-cache strongswan tcpdump iputils iproute2 wget && \
-        mkdir -p /etc/ipsec.secrets.d && \
+COPY MANIFEST /root/MANIFEST
+
+RUN apk update && ( cat /root/MANIFEST | xargs apk add)
+RUN mkdir -p /etc/ipsec.secrets.d && \
         mkdir -p /etc/ipsec.config.d && \
         mkdir -p /etc/confd/conf.d && \
         mkdir -p /etc/confd/templates && \
@@ -27,5 +29,6 @@ COPY files/strongswan.psk-template.secret.toml /etc/confd/conf.d.disabled/
 COPY files/charon.conf.toml /etc/confd/conf.d.disabled/
 COPY config/farp.conf /etc/strongswan.d/charon/
 COPY files/start-strongswan.sh /usr/local/bin
+COPY files/freeze_apk_versions /usr/local/bin
 
 ENTRYPOINT ["/usr/local/bin/start-strongswan.sh"]
