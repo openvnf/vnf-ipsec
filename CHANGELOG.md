@@ -5,6 +5,7 @@
 * codify dependent alpine version to `3.8`
 * remove usage of build container and use binary `confd` instead
 * update confd to `0.16.0`
+* build will fix *CVE-2018-17540*
 
 ## v1.3.1
 
