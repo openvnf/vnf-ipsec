@@ -17,6 +17,18 @@ hosts `/lib/modules` into the container.
 
 For other architectures, the code might have to be changed.
 
+<!-- toc -->
+
+* [Run this container](#run-this-container)
+* [Configuration](#configuration)
+  * [manual configuration](#manual-configuration)
+  * [enable or disable additional modules](#enable-or-disable-additional-modules)
+* [VTI Interface](#vti-interface)
+* [Development](#development)
+  * [freezing versions](#freezing-versions)
+
+<!-- tocstop -->
+
 ## Run this container
 
 To run the container execute the following section:
