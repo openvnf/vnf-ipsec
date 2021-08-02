@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.5.0
+
+* update base image alpine:3.14
+* update strongswan to strongswan 5.9.1-r1
+
 ## v1.4.0
 
 * codify dependent alpine version to `3.8`
