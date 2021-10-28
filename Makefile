@@ -1,4 +1,5 @@
 DOCS := $(wildcard docs/*.md)
+IMG := vnf-ipsec:latest
 
 all: create-toc create-doc-tocs create-up-tocs
 
@@ -11,5 +12,8 @@ create-toc:
 create-doc-tocs: $(DOCS)
 	$(foreach f,$^,markdown-toc --bullets="*" -i $(f);)
 
-.PHONY: create-toc create-doc-tocs create-up-tocs
+docker-build:
+	docker buildx build -t ${IMG} .
+
+.PHONY: create-toc create-doc-tocs create-up-tocs docker-build
 

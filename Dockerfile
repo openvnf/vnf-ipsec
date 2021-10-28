@@ -1,4 +1,4 @@
-FROM alpine:3.14
+FROM alpine:3.14.2
 LABEL   \
         org.label-schema.name="travelping/ping-exporter" \
         org.label-schema.vendor="Travelping GmbH" \

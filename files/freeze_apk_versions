@@ -3,4 +3,4 @@
 echo "updating repository metadata"
 apk update
 echo "copy /root/MANIFEST to your repository to use for later builds"
-apk info -v -I | awk '{ split($0,a,/\-[0-9,\.]*\-r[0-9]*$/); packet = a[1]; match($0,/[0-9,\.]*\-r[0-9]*$/); version = substr($0, RSTART, RLENGTH); printf("%s=%s\n", packet, version)}' > /root/MANIFEST
+apk info -v | awk '{ split($0,a,/\-[0-9,\.]*\-r[0-9]*$/); packet = a[1]; match($0,/[0-9,\.]*\-r[0-9]*$/); version = substr($0, RSTART, RLENGTH); printf("%s=%s\n", packet, version)}' > /root/MANIFEST
