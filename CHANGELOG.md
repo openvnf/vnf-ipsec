@@ -1,9 +1,16 @@
 # Changelog
 
+
+## v1.5.1
+
+* update strongswan to strongswan:5.9.1-r3
+  fixes *CVE-2021-41990* and *CVE-2021-41991*
+* update base image alpine:3.15
+
 ## v1.5.0
 
-* update base image alpine:3.14
 * update strongswan to strongswan 5.9.1-r1
+* update base image alpine:3.14
 
 ## v1.4.0
 
