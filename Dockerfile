@@ -1,11 +1,11 @@
-FROM alpine:3.14
+FROM alpine:3.15
 LABEL   \
-        org.label-schema.name="travelping/ping-exporter" \
+        org.label-schema.name="cnf/ipsec" \
         org.label-schema.vendor="Travelping GmbH" \
         org.label-schema.description="Creates IPSEC connections to other sites or hosts using Strongswan" \
         org.label-schema.url="https://github.com/openvnf/vnf-ipsec" \
         org.label-schema.vcs-url="https://github.com/openvnf/vnf-ipsec" \
-        maintainer="tobias.famulla@travelping.com"
+        maintainer="juergen.krutzler@travelping.com"
 
 COPY MANIFEST /root/MANIFEST
 
