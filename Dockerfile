@@ -1,4 +1,4 @@
-FROM alpine:3.15
+FROM alpine:3.17
 LABEL   \
         org.label-schema.name="cnf/ipsec" \
         org.label-schema.vendor="Travelping GmbH" \
@@ -9,7 +9,7 @@ LABEL   \
 
 COPY MANIFEST /root/MANIFEST
 
-RUN apk update && ( cat /root/MANIFEST | xargs apk add)
+RUN apk update && apk upgrade --no-cache  && ( cat /root/MANIFEST | xargs apk add)
 RUN mkdir -p /etc/ipsec.secrets.d && \
         mkdir -p /etc/ipsec.config.d && \
         mkdir -p /etc/confd/conf.d && \

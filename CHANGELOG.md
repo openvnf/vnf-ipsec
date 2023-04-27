@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.5.2
+
+* update strongswan to strongswan:5.9.8-r1
+* update base image alpine:3.17
 
 ## v1.5.1
 
