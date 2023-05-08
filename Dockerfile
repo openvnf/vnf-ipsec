@@ -27,7 +27,7 @@ COPY config/*.tmpl /etc/confd/templates/
 COPY files/strongswan.psk-template.config.toml /etc/confd/conf.d.disabled/
 COPY files/strongswan.psk-template.secret.toml /etc/confd/conf.d.disabled/
 COPY files/charon.conf.toml /etc/confd/conf.d.disabled/
-COPY config/farp.conf /etc/strongswan.d/charon/
+COPY config/*.conf /etc/strongswan.d/charon/
 COPY files/start-strongswan.sh /usr/local/bin
 COPY files/freeze_apk_versions /usr/local/bin
 
